@@ -17,6 +17,7 @@ for h in range(len(sys.argv)):
             else:
                 wort[i]=wort[i].upper()
         zeitweise.append(wort)
+        zeitweise.append(" ")
 
 ausgabe=list(itertools.chain.from_iterable(zeitweise))
 print(''.join(ausgabe))
