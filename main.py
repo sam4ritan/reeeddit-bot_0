@@ -1,23 +1,24 @@
 import sys
 import random
-import itertools
 
-zeitweise=[]
-ausgabe=[]
 
-for h in range(len(sys.argv)):
+in_string = ' '.join(sys.argv[1:])
 
-    if h > 0:
-        wort = list(sys.argv[h])
+mocked = ''
 
-        for i in range(len(wort)):
-            tmp = random.random()
-            if tmp >= 0.5: 
-                wort[i]=wort[i].lower()
-            else:
-                wort[i]=wort[i].upper()
-        zeitweise.append(wort)
-        zeitweise.append(" ")
-
-ausgabe=list(itertools.chain.from_iterable(zeitweise))
-print(''.join(ausgabe))
+# Makes long runs less likely, maximum run is equal to pool size.
+max_run = 3
+rand_pool = [random.choice([True, False]) for _ in range(max_run)]
+for c in in_string:
+    if c is not ' ':
+        capitalize = random.choice(rand_pool)
+        rand_pool.remove(capitalize)
+        if capitalize:
+            c = c.upper()
+            rand_pool.append(False)
+        else:
+            c = c.lower()
+            rand_pool.append(True)
+    mocked += c
+    
+print(mocked)
