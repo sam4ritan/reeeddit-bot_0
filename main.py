@@ -57,7 +57,7 @@ for comment in subreddit.stream.comments():
                 parent = comment.parent()
                 print("Replying to " + parent.id + " in post " + post.id)
                 comment.reply(mockery(parent.body))
-            else if comment.is_root:
+            elif comment.is_root:
                 print("Replying to " + post.id)
                 comment.reply(mockery(post.title))
 
