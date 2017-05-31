@@ -50,7 +50,7 @@ for comment in subreddit.stream.comments():
             already_mocked = already_mocked.split("\n")
             already_mocked = list(filter(None, already_mocked))
 
-    if re.search("MoCkEd", comment.body, re.IGNORECASE):
+    if re.search("MoCkEd", comment.body):
         if comment.id not in already_mocked:
             post = comment.submission
             if not comment.is_root:
