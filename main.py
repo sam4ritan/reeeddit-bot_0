@@ -24,21 +24,10 @@ def mockery(in_string):
 
     return mocked
 
-
 reddit = praw.Reddit('reeddit_bot')
 
 subreddit = reddit.subreddit('pythonforengineers') #free for testing
 #subreddit = reddit.subreddit('TumblrInAction')
-
-if not os.path.isfile("already_mocked.txt"):
-    already_mocked = []
-else:
-    with open("already_mocked.txt", "r") as log:
-        already_mocked = log.read()
-        already_mocked = already_mocked.split("\n")
-        already_mocked = list(filter(None, already_mocked))
-
-
 
 for comment in subreddit.stream.comments():
 
@@ -56,11 +45,18 @@ for comment in subreddit.stream.comments():
             if not comment.is_root:
                 parent = comment.parent()
                 print("Replying to " + parent.id + " in post " + post.id)
-                comment.reply(mockery(parent.body))
+                answer = mockery(parent.body)
+                #print(answer)
+                comment.reply(answer)
             elif comment.is_root:
                 print("Replying to " + post.id)
                 comment.reply(mockery(post.title))
-
+            already_mocked.append(comment.id)
+    if re.search("reeddit", comment.body, re.IGNORECASE):
+        if comment.id not in already_mocked:
+            post = comment.submission
+            print("Was triggered by " + comment.id + " in post " + post.id + ". Am literally shaking")
+            comment.reply("That was one of my trigger words!\nREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!")
             already_mocked.append(comment.id)
     with open("already_mocked.txt", "w") as f:
         for comment_id in already_mocked:
